@@ -1,0 +1,232 @@
+<html>
+<head>
+    <title>Seraya Shipping (Pvt) Ltd</title>
+
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" type="image/png" href="logo.png"/>
+
+
+    <script src='./dist/bundle.js'></script>
+
+
+    <script>
+
+ 
+        const {containerBootstrap, Nlp, LangEn, fs} = window.nlpjs;
+
+        function onIntent(nlp, input) {
+            console.log(input);
+            if (input.intent === 'greetings.hello') {
+                const hours = new Date().getHours();
+                const output = input;
+                if(hours < 12) {
+                    output.answer = 'Good morning!';
+                } else if(hours < 17) {
+                    output.answer = 'Good afternoon!';
+                } else {
+                    output.answer = 'Good evening!';
+                }
+                return output;
+            }
+            return input;
+        }
+
+        const setupNLP = async corpus => {
+            const container = containerBootstrap();
+            container.register('fs', fs);
+            container.use(Nlp);
+            container.use(LangEn);
+            const nlp = container.get('nlp');
+            nlp.onIntent = onIntent;
+            nlp.settings.autoSave = false;
+            await nlp.addCorpus(corpus);
+            nlp.train();
+            return nlp;
+        };
+
+        const onChatSubmit = nlp => async event => {
+            event.preventDefault();
+            const chat = document.getElementById('chat');
+            const chatInput = document.getElementById('chatInput');
+            chat.innerHTML = chat.innerHTML + `<h4>${chatInput.value} :&ensp;&#129333;</h4>`;
+            const response = await nlp.process('en', chatInput.value);
+            chat.innerHTML = chat.innerHTML + `<h5>&ensp;&#129302; : ${response.answer}</h5>`;
+            chatInput.value = '';
+        };
+
+        (async () => {
+            const nlp = await setupNLP('https://raw.githubusercontent.com/dimu92/cbot/main/corpus.json');
+            const chatForm = document.getElementById('chatbotForm');
+            chatForm.addEventListener('submit', onChatSubmit(nlp));
+        })();
+
+
+function s(){
+var i=document.getElementById("chatInput");
+if(i.value=="")
+    {
+    document.getElementById("chatSubmit").disabled=true;
+    }
+else
+    document.getElementById("chatSubmit").disabled=false;
+}
+
+
+function scrollBar() {
+            var content = document.getElementById('chat');
+            content.scrollTop = content.scrollHeight;
+}
+
+
+ </script>
+
+
+</head>
+
+
+
+<style> 
+
+body {
+  background-image: url("bg.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+font: verdana;
+}
+
+
+h3 {
+font-size: 20px;  
+font-weight: normal;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+h4 {
+font-size: 20px;  
+font-weight: normal;
+border: 1.5px solid #0096FF;
+border-radius: 1.5vw 1.5vw 0vw 1.5vw;
+background-color: #0096FF;
+font-family: Arial, Helvetica, sans-serif;
+text-align: right;
+
+}
+
+h5 {
+font-size: 20px;
+font-weight: normal;  
+border: 1.5px solid #5D3FD3;
+border-radius: 1.5vw 1.5vw 1.5vw 0vw;
+background-color: #5D3FD3;
+font-family: Arial, Helvetica, sans-serif;
+
+}
+
+
+.message { 
+  height: 44vw;
+  width: 28vw;
+  background-color: white;
+  opacity: 0.9;
+  margin-left: 66vw;
+  margin-top: 1vw;
+  padding: 10px 10px 20px 10px;
+  border-radius: 25px;
+
+
+  } 
+
+
+.message .inputsec {
+  color: #000;
+  min-width: 0.5vw;
+  outline: none;
+  height: 2vw;
+  width: 26vw;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin-left: 5px;
+  border-bottom: solid #007AFF 0.1vw;
+
+
+}
+
+.message .texthead {
+height: 1vw;
+width: 28vw;
+border-radius: 25px;
+text-align: center;
+}
+
+.message .textsec {
+  max-height: 33vw;
+  margin-top: 1.2vw;
+  margin-left: 1.2vw;
+  margin-right: 1vw;
+  word-wrap: break-word;
+  scroll-behavior: auto;
+  position: relative;
+  overflow: auto;
+
+
+
+}
+
+.message ::-webkit-scrollbar {
+display: none;
+  }
+
+
+.message .inputform {
+  margin-top:auto;
+  position: absolute;
+  bottom: 25px;
+}
+
+ .message .button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 25px;
+  float:right;
+  margin-top: 1.2vw;
+                
+}
+
+
+
+
+</style> 
+
+<body>
+ 
+<div class="message" id="message"> 
+
+<div class="texthead"><h3>Hi! 👋 Welcome to Seraya Shipping!</h3></div>
+  
+<div class="textsec" id="chat"></div>
+
+<form class="inputform" id="chatbotForm">
+
+<div><input class="inputsec" type="text" id="chatInput" onkeyup="s()"/></div>
+<div><input class="button" type="submit" id="chatSubmit" value="Send" onclick = "scrollBar()" disabled/></div>
+
+</form>
+
+</div>
+
+
+</body>
+
+</html>
