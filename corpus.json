@@ -115,7 +115,7 @@
       ],
       "answers": [
         "I probably won't be able to give you the correct answer right away",
-        "I'm not sure I'll have the best answer, but I'll try"
+        "I'm not sure I'll have the best answer, but I'll try",
 	"You can reach our agent on +94 112 815 582 for further details"
       ]
     },
@@ -183,7 +183,7 @@
       ],
       "answers": [
         "We are only doing crew management",
-        "We do crew recruitement only"
+        "We do crew recruitment only"
       ]
     },
 
@@ -965,7 +965,7 @@
         "what should I do?"
       ],
       "answers": [
-        "Sorry, I don't understand"
+        "Sorry I don't understand",
 	"Can you explain it again?"
       ]
     }
